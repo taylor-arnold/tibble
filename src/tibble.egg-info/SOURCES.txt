@@ -1,0 +1,17 @@
+pyproject.toml
+src/tibble/__init__.py
+src/tibble/input.py
+src/tibble/public.py
+src/tibble/tibble.py
+src/tibble/utils.py
+src/tibble/verbs_columns.py
+src/tibble/verbs_join.py
+src/tibble/verbs_output.py
+src/tibble/verbs_reshape.py
+src/tibble/verbs_rows.py
+src/tibble/verbs_transform.py
+src/tibble.egg-info/PKG-INFO
+src/tibble.egg-info/SOURCES.txt
+src/tibble.egg-info/dependency_links.txt
+src/tibble.egg-info/requires.txt
+src/tibble.egg-info/top_level.txt

@@ -16,7 +16,7 @@ from .verbs_join import (
     join_semi,
 )
 from .verbs_output import to_csv, to_dtm, to_ggplot, to_torch, to_xy
-from .verbs_reshape import pivot_longer
+from .verbs_reshape import pivot_longer, pivot_wider
 from .verbs_rows import arrange, filter, omit_na, slice_head, slice_sample, slice_tail
 from .verbs_transform import mutate, summarize, table
 
@@ -220,6 +220,11 @@ class Tibble:
                 names_to=names_to,
                 values_to=values_to,
             )
+        )
+
+    def pivot_wider(self, names_from, values_from=None) -> "Tibble":
+        return type(self)(
+            pivot_wider(self._df, names_from=names_from, values_from=values_from)
         )
 
     # ----------------------- verbs_output.py  ----------------------------------#

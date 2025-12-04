@@ -40,7 +40,7 @@ def make_groups(
     return grouped
 
 
-def compile_expr(expr: str):
+def compile_expr(expr: str, caller_globals=None):
     """
     Turn an expression like "$a + np.mean($b)" into a function:
         f(d) -> d["a"] + np.mean(d["b"])
@@ -50,7 +50,10 @@ def compile_expr(expr: str):
 
     code = compile(rewritten, "<mutate-expr>", "eval")
 
-    def fn(d, _code=code):
-        return eval(_code, globals(), {"d": d})
+    # Use caller's globals if provided, otherwise use this module's globals
+    eval_globals = caller_globals if caller_globals is not None else globals()
+
+    def fn(d, _code=code, _globals=eval_globals):
+        return eval(_code, _globals, {"d": d})
 
     return fn

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from typing import Any, Sequence
 
 import pandas as pd
@@ -12,6 +13,10 @@ def mutate(
     groupby: str | Sequence[str] | None = None,
     **new_cols: Any,
 ) -> pd.DataFrame:
+    # Capture caller's globals to make their imported functions available
+    caller_frame = inspect.currentframe().f_back.f_back
+    caller_globals = caller_frame.f_globals if caller_frame else None
+
     grouped = utils.make_groups(df, groupby, to_iter=True)
 
     out = []
@@ -19,7 +24,7 @@ def mutate(
         group_df = group_df.reset_index(drop=True).copy()
         for name, fn in new_cols.items():
             if isinstance(fn, str):
-                fn = utils.compile_expr(fn)
+                fn = utils.compile_expr(fn, caller_globals)
 
             group_df[name] = fn(group_df)
 
@@ -33,9 +38,13 @@ def summarize(
     groupby: str | Sequence[str] | None = None,
     **metrics: Any,
 ) -> pd.DataFrame:
+    # Capture caller's globals to make their imported functions available
+    caller_frame = inspect.currentframe().f_back.f_back
+    caller_globals = caller_frame.f_globals if caller_frame else None
+
     for key, value in metrics.items():
         if isinstance(value, str):
-            metrics[key] = utils.compile_expr(value)
+            metrics[key] = utils.compile_expr(value, caller_globals)
 
     metrics_series = pd.Series(metrics)
 

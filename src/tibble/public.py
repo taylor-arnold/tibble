@@ -8,8 +8,23 @@ import pandas as pd
 
 def concat(objs, **kwargs) -> "Tibble":
     df = Tibble(pd.concat([x._df for x in objs], **kwargs))
-
     return df
+
+
+def notin(element, test_elements):
+    return np.isin(element, test_elements, invert=True)
+
+
+def isin(element, test_elements):
+    return np.isin(element, test_elements, invert=True)
+
+
+def isna(obj):
+    return pd.isna(obj)
+
+
+def notna(obj):
+    return pd.notna(obj)
 
 
 def nth(arr, n, default=None):
